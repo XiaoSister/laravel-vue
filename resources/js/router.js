@@ -9,7 +9,7 @@ let routes = [
     {
         path : '/login',
         name : 'login',
-        component: require('./components/Login').default
+        component: require('./components/login/Login').default
     },
     {
         path : '/register',

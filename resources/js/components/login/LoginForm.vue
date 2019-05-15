@@ -1,16 +1,16 @@
 <template>
-    <form class="col s12" @submit.prevent="register">
+    <form class="col s12"  @submit.prevent="login">
         <div class="input-field" :class="{'has-error': errors.has('name')}">
             <input
                 type="text"
+                class="validate"
+                name="name"
                 v-model="name"
                 v-validate="'required|min:4|max:24'"
                 data-vv-as="用户名"
-                class="validate"
                 placeholder="用户名"
-                name="name"
-                autocomplete="off"
                 autofocus
+                autocomplete="off"
                 required>
             <span
                 v-show="errors.has('name')"
@@ -33,23 +33,6 @@
                 v-show="errors.has('password')"
                 :class="{'has-error': errors.has('password')}">
                 {{ errors.first('password') }}
-            </span>
-        </div>
-        <div class="input-field" :class="{'has-error': errors.has('password_confirmation')}">
-            <input
-                type="password"
-                v-model="password_confirmation"
-                v-validate="{'required': 'true', 'is': password}"
-                data-vv-as="确认密码"
-                placeholder="确认密码"
-                name="password_confirmation"
-                class="validate"
-                autocomplete="off"
-                required>
-            <span
-                v-show="errors.has('password_confirmation')"
-                :class="{'has-error': errors.has('password_confirmation')}">
-                {{ errors.first('password_confirmation') }}
             </span>
         </div>
         <div class="input-field">
@@ -75,14 +58,16 @@
             name="captcha_key"
             v-model="captcha_key"
             hidden>
-        <button type="submit" class="button-default">注册</button>
+        <a href=""><h6>忘记密码</h6></a>
+        <button type="submit" class="button-default">登陆</button>
     </form>
 </template>
 
 <script>
     import md5 from 'js-md5'
+    import JWTToken from '../../helpers/jwt'
     export default {
-        name: "RegisterForm",
+        name: "LoginForm",
         mounted () {
             this.getCaptchas ()
         },
@@ -90,34 +75,38 @@
             return {
                 name: '',
                 password: '',
-                password_confirmation: '',
                 captcha_key: '',
                 captcha_code: '',
                 captcha_image: '',
             }
         },
         methods:{
-            register () {
-                let formData = {
-                    name: this.name,
-                    password: md5(this.password),
-                    password_confirmation: md5(this.password_confirmation),
-                    captcha_key: this.captcha_key,
-                    captcha_code: this.captcha_code,
-                };
-                axios.post('/api/register', formData).then(response => {
-                    if (response.data.status === 200) {
-                        this.$router.push({name: 'index'});
-                    }else{
-                        console.log(response.data);
-                    }
-
-                })
-            },
             getCaptchas () {
                 axios.get('/api/captchas').then(response => {
                     this.captcha_image = response.data.data.captcha_image;
                     this.captcha_key = response.data.data.captcha_key;
+                })
+            },
+            login () {
+                let formData = {
+                    client_id: 2,
+                    client_secret: '1s8Z6ooA20ZzzhhFcmE6vsvcYN9Djl5TYkefKdlk',
+                    grant_type: 'password',
+                    scope: '',
+                    username: this.name,
+                    password: md5(this.password),
+                    // captcha_key: this.captcha_key,
+                    // captcha_code: this.captcha_code,
+                };
+                axios.post('/oauth/token', formData).then(response => {
+                    JWTToken.setToken(response.data.access_token);
+                    console.log(response);
+                    // if (response.data.status === 200) {
+                    //     this.$router.push({name: 'index'});
+                    // }else{
+                    //     console.log(response.data);
+                    // }
+
                 })
             }
         }

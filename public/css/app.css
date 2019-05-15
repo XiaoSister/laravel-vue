@@ -11280,5 +11280,17 @@ textarea.materialize-textarea:focus:not([readonly]) {
 .copyright span {
 	color: #eeeeee;
 	text-align: center;
+}.has-error {
+  color: #e3342f;
+}
+
+.has-error input {
+  border: #e3342f solid 1px !important;
+}
+
+.has-error input[type=text].valid,
+.has-error input[type=text].valid {
+  border-bottom: 1px solid #e3342f;
+  box-shadow: 0 1px 0 0 #e3342f;
 }
 
