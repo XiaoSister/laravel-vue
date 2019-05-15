@@ -21,6 +21,6 @@ class CaptchasController extends Controller
             'captcha_image' => $captcha->inline()
         ];
 
-        return response()->json(['status' => 200, 'message' => 'success', 'data' => $data]);
+        return $this->data(200, 'success', $data);
     }
 }

@@ -1999,6 +1999,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "RegisterForm",
   mounted: function mounted() {
@@ -2010,6 +2012,7 @@ __webpack_require__.r(__webpack_exports__);
       password: '',
       password_confirmation: '',
       captcha_key: '',
+      captcha_code: '',
       captcha_image: ''
     };
   },
@@ -2021,12 +2024,17 @@ __webpack_require__.r(__webpack_exports__);
         name: this.name,
         password: this.password,
         password_confirmation: this.password_confirmation,
-        captcha_key: this.captcha_key
+        captcha_key: this.captcha_key,
+        captcha_code: this.captcha_code
       };
       axios.post('/api/register', formData).then(function (response) {
-        _this.$router.push({
-          name: 'index'
-        });
+        if (response.data.status === 200) {
+          _this.$router.push({
+            name: 'index'
+          });
+        } else {
+          console.log(response.data);
+        }
       });
     },
     getCaptchas: function getCaptchas() {
@@ -14739,6 +14747,12 @@ var render = function() {
               rawName: "v-validate",
               value: { required: "true" },
               expression: "{'required': 'true'}"
+            },
+            {
+              name: "model",
+              rawName: "v-model",
+              value: _vm.captcha_code,
+              expression: "captcha_code"
             }
           ],
           staticClass: "validate",
@@ -14746,9 +14760,18 @@ var render = function() {
             type: "text",
             "data-vv-as": "验证码",
             placeholder: "验证码",
-            name: "captcha_key",
+            name: "captcha_code",
             autocomplete: "off",
             required: ""
+          },
+          domProps: { value: _vm.captcha_code },
+          on: {
+            input: function($event) {
+              if ($event.target.composing) {
+                return
+              }
+              _vm.captcha_code = $event.target.value
+            }
           }
         }),
         _vm._v(" "),
@@ -14764,16 +14787,16 @@ var render = function() {
               {
                 name: "show",
                 rawName: "v-show",
-                value: _vm.errors.has("captcha_key"),
-                expression: "errors.has('captcha_key')"
+                value: _vm.errors.has("captcha_code"),
+                expression: "errors.has('captcha_code')"
               }
             ],
-            class: { "has-error": _vm.errors.has("captcha_key") }
+            class: { "has-error": _vm.errors.has("captcha_code") }
           },
           [
             _vm._v(
               "\n            " +
-                _vm._s(_vm.errors.first("captcha_key")) +
+                _vm._s(_vm.errors.first("captcha_code")) +
                 "\n        "
             )
           ]
@@ -14789,7 +14812,7 @@ var render = function() {
             expression: "captcha_key"
           }
         ],
-        attrs: { type: "text", hidden: "" },
+        attrs: { type: "text", name: "captcha_key", hidden: "" },
         domProps: { value: _vm.captcha_key },
         on: {
           input: function($event) {
