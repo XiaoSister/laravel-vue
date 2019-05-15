@@ -4,8 +4,6 @@ namespace App\Http\Controllers\Auth;
 
 use App\Models\User;
 use App\Http\Controllers\Controller;
-use Illuminate\Auth\Events\Registered;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
@@ -70,34 +68,5 @@ class RegisterController extends Controller
             'avatar'   => '/images/users/default.png',
             'ip'       => $data['ip'],
         ]);
-    }
-
-    public function register(Request $request)
-    {
-        $captchaData = \Cache::get($request->captcha_key);
-
-        if (!$captchaData) {
-            return $this->data(422, '图片验证码已失效');
-        }
-
-        if (!hash_equals($captchaData['code'], $request->captcha_code)) {
-            // 验证错误就清除缓存
-            \Cache::forget($request->captcha_key);
-
-            return $this->data(422, '验证码错误');
-        }
-
-        // 清除图片验证码缓存
-        \Cache::forget($request->captcha_key);
-
-        $request['ip'] = $request->getClientIp();
-        $this->validator($request->all())->validate();
-
-        event(new Registered($user = $this->create($request->all())));
-
-        $this->guard()->login($user);
-
-        return $this->registered($request, $user)
-            ?: redirect($this->redirectPath());
     }
 }

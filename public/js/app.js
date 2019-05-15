@@ -2001,6 +2001,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "RegisterForm",
   mounted: function mounted() {
@@ -14559,8 +14560,8 @@ var render = function() {
               {
                 name: "validate",
                 rawName: "v-validate",
-                value: "required|min:6|max:24",
-                expression: "'required|min:6|max:24'"
+                value: "required|min:4|max:24",
+                expression: "'required|min:4|max:24'"
               }
             ],
             staticClass: "validate",
@@ -14570,6 +14571,7 @@ var render = function() {
               placeholder: "用户名",
               name: "name",
               autocomplete: "off",
+              autofocus: "",
               required: ""
             },
             domProps: { value: _vm.name },

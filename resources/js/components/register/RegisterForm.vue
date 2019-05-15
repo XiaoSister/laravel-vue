@@ -4,12 +4,13 @@
             <input
                 type="text"
                 v-model="name"
-                v-validate="'required|min:6|max:24'"
+                v-validate="'required|min:4|max:24'"
                 data-vv-as="用户名"
                 class="validate"
                 placeholder="用户名"
                 name="name"
                 autocomplete="off"
+                autofocus
                 required>
             <span
                 v-show="errors.has('name')"
