@@ -80,6 +80,7 @@
 </template>
 
 <script>
+    import md5 from 'js-md5'
     export default {
         name: "RegisterForm",
         mounted () {
@@ -99,8 +100,8 @@
             register () {
                 let formData = {
                     name: this.name,
-                    password: this.password,
-                    password_confirmation: this.password_confirmation,
+                    password: md5(this.password),
+                    password_confirmation: md5(this.password_confirmation),
                     captcha_key: this.captcha_key,
                     captcha_code: this.captcha_code,
                 };
