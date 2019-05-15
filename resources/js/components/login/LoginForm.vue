@@ -89,18 +89,14 @@
             },
             login () {
                 let formData = {
-                    client_id: 2,
-                    client_secret: '1s8Z6ooA20ZzzhhFcmE6vsvcYN9Djl5TYkefKdlk',
-                    grant_type: 'password',
-                    scope: '',
-                    username: this.name,
+                    name: this.name,
                     password: md5(this.password),
-                    // captcha_key: this.captcha_key,
-                    // captcha_code: this.captcha_code,
+                    captcha_key: this.captcha_key,
+                    captcha_code: this.captcha_code,
                 };
-                axios.post('/oauth/token', formData).then(response => {
-                    JWTToken.setToken(response.data.access_token);
-                    console.log(response);
+                axios.post('/api/login', formData).then(response => {
+                    // JWTToken.setToken(response.data.token);
+                    console.log(response.data);
                     // if (response.data.status === 200) {
                     //     this.$router.push({name: 'index'});
                     // }else{

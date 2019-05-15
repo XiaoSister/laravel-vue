@@ -22,3 +22,6 @@ Route::get('captchas', 'Api\CaptchasController@getCaptchas');
 
 // User register
 Route::post('register', 'Api\RegisterController@registered');
+
+// User login
+Route::post('login', 'Api\LoginController@login');

@@ -1977,18 +1977,14 @@ __webpack_require__.r(__webpack_exports__);
     },
     login: function login() {
       var formData = {
-        client_id: 2,
-        client_secret: '1s8Z6ooA20ZzzhhFcmE6vsvcYN9Djl5TYkefKdlk',
-        grant_type: 'password',
-        scope: '',
-        username: this.name,
-        password: js_md5__WEBPACK_IMPORTED_MODULE_0___default()(this.password) // captcha_key: this.captcha_key,
-        // captcha_code: this.captcha_code,
-
+        name: this.name,
+        password: js_md5__WEBPACK_IMPORTED_MODULE_0___default()(this.password),
+        captcha_key: this.captcha_key,
+        captcha_code: this.captcha_code
       };
-      axios.post('/oauth/token', formData).then(function (response) {
-        _helpers_jwt__WEBPACK_IMPORTED_MODULE_1__["default"].setToken(response.data.access_token);
-        console.log(response); // if (response.data.status === 200) {
+      axios.post('/api/login', formData).then(function (response) {
+        // JWTToken.setToken(response.data.token);
+        console.log(response.data); // if (response.data.status === 200) {
         //     this.$router.push({name: 'index'});
         // }else{
         //     console.log(response.data);
