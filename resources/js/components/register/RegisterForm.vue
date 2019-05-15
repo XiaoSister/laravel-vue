@@ -51,6 +51,27 @@
                 {{ errors.first('password_confirmation') }}
             </span>
         </div>
+        <div class="input-field">
+            <input
+                type="text"
+                v-validate="{'required': 'true'}"
+                data-vv-as="验证码"
+                placeholder="验证码"
+                name="captcha_key"
+                class="validate"
+                autocomplete="off"
+                required>
+            <img :src="captcha_image" alt="" @click="getCaptchas">
+            <span
+                v-show="errors.has('captcha_key')"
+                :class="{'has-error': errors.has('captcha_key')}">
+                {{ errors.first('captcha_key') }}
+            </span>
+        </div>
+        <input
+            type="text"
+            v-model="captcha_key"
+            hidden>
         <button type="submit" class="button-default">注册</button>
     </form>
 </template>
@@ -58,11 +79,16 @@
 <script>
     export default {
         name: "RegisterForm",
+        mounted () {
+            this.getCaptchas ()
+        },
         data () {
             return {
                 name: '',
                 password: '',
                 password_confirmation: '',
+                captcha_key: '',
+                captcha_image: '',
             }
         },
         methods:{
@@ -71,9 +97,16 @@
                     name: this.name,
                     password: this.password,
                     password_confirmation: this.password_confirmation,
+                    captcha_key: this.captcha_key,
                 };
                 axios.post('/api/register', formData).then(response => {
                     this.$router.push({name: 'index'});
+                })
+            },
+            getCaptchas () {
+                axios.get('/api/captchas').then(response => {
+                    this.captcha_image = response.data.data.captcha_image;
+                    this.captcha_key = response.data.data.captcha_key;
                 })
             }
         }

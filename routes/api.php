@@ -17,4 +17,8 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+// Get captcha
+Route::get('captchas', 'Api\CaptchasController@getCaptchas');
+
+// User register
 Route::post('register', 'Auth\RegisterController@register');

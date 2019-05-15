@@ -1978,13 +1978,39 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "RegisterForm",
+  mounted: function mounted() {
+    this.getCaptchas();
+  },
   data: function data() {
     return {
       name: '',
       password: '',
-      password_confirmation: ''
+      password_confirmation: '',
+      captcha_key: '',
+      captcha_image: ''
     };
   },
   methods: {
@@ -1994,12 +2020,21 @@ __webpack_require__.r(__webpack_exports__);
       var formData = {
         name: this.name,
         password: this.password,
-        password_confirmation: this.password_confirmation
+        password_confirmation: this.password_confirmation,
+        captcha_key: this.captcha_key
       };
       axios.post('/api/register', formData).then(function (response) {
         _this.$router.push({
           name: 'index'
         });
+      });
+    },
+    getCaptchas: function getCaptchas() {
+      var _this2 = this;
+
+      axios.get('/api/captchas').then(function (response) {
+        _this2.captcha_image = response.data.data.captcha_image;
+        _this2.captcha_key = response.data.data.captcha_key;
       });
     }
   }
@@ -14695,6 +14730,76 @@ var render = function() {
           )
         ]
       ),
+      _vm._v(" "),
+      _c("div", { staticClass: "input-field" }, [
+        _c("input", {
+          directives: [
+            {
+              name: "validate",
+              rawName: "v-validate",
+              value: { required: "true" },
+              expression: "{'required': 'true'}"
+            }
+          ],
+          staticClass: "validate",
+          attrs: {
+            type: "text",
+            "data-vv-as": "验证码",
+            placeholder: "验证码",
+            name: "captcha_key",
+            autocomplete: "off",
+            required: ""
+          }
+        }),
+        _vm._v(" "),
+        _c("img", {
+          attrs: { src: _vm.captcha_image, alt: "" },
+          on: { click: _vm.getCaptchas }
+        }),
+        _vm._v(" "),
+        _c(
+          "span",
+          {
+            directives: [
+              {
+                name: "show",
+                rawName: "v-show",
+                value: _vm.errors.has("captcha_key"),
+                expression: "errors.has('captcha_key')"
+              }
+            ],
+            class: { "has-error": _vm.errors.has("captcha_key") }
+          },
+          [
+            _vm._v(
+              "\n            " +
+                _vm._s(_vm.errors.first("captcha_key")) +
+                "\n        "
+            )
+          ]
+        )
+      ]),
+      _vm._v(" "),
+      _c("input", {
+        directives: [
+          {
+            name: "model",
+            rawName: "v-model",
+            value: _vm.captcha_key,
+            expression: "captcha_key"
+          }
+        ],
+        attrs: { type: "text", hidden: "" },
+        domProps: { value: _vm.captcha_key },
+        on: {
+          input: function($event) {
+            if ($event.target.composing) {
+              return
+            }
+            _vm.captcha_key = $event.target.value
+          }
+        }
+      }),
       _vm._v(" "),
       _c(
         "button",
