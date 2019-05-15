@@ -49,7 +49,7 @@
                     password_confirmation: this.password_confirmation,
                 };
                 axios.post('/api/register', formData).then(response => {
-                    console.log(11);
+                    this.$router.push({name: 'index'});
                 })
             }
         }

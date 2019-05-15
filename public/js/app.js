@@ -1965,13 +1965,17 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     register: function register() {
+      var _this = this;
+
       var formData = {
         name: this.name,
         password: this.password,
         password_confirmation: this.password_confirmation
       };
       axios.post('/api/register', formData).then(function (response) {
-        console.log(11);
+        _this.$router.push({
+          name: 'index'
+        });
       });
     }
   }
@@ -17969,12 +17973,15 @@ __webpack_require__.r(__webpack_exports__);
 
 var routes = [{
   path: '/',
+  name: 'index',
   component: __webpack_require__(/*! ./components/Index */ "./resources/js/components/Index.vue")["default"]
 }, {
   path: '/login',
+  name: 'login',
   component: __webpack_require__(/*! ./components/Login */ "./resources/js/components/Login.vue")["default"]
 }, {
   path: '/register',
+  name: 'register',
   component: __webpack_require__(/*! ./components/register/Register */ "./resources/js/components/register/Register.vue")["default"]
 }];
 /* harmony default export */ __webpack_exports__["default"] = (new vue_router__WEBPACK_IMPORTED_MODULE_0__["default"]({
